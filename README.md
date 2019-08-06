@@ -63,12 +63,11 @@ post-py/Dockerfile.1
 ```
 
 Размер сократился примерно вдове: 
-
-
+```shell
 Образ		     Было/Стало
 mindphaser/comment   779MB/304MB
 mindphaser/ui        452MB/240MB
 mindphaser/post	     325MB/292MB
-
+```
 
 Для post был сделан Dockerfile на базе образа Alpine:3.10
