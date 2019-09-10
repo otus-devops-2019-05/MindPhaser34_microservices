@@ -1,0 +1,59 @@
+version: '3'
+services:
+  zipkin:
+    image: openzipkin/zipkin
+    ports:
+      - "9411:9411"
+    networks:
+      - back_net
+      - front_net
+
+  fluentd:
+    image: ${USERNAME}/fluentd
+    environment:
+      - ZIPKIN_ENABLED=${ZIPKIN_ENABLED}
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
+    networks:
+      - back_net
+ 
+  elasticsearch:
+    image: elasticsearch:7.3.1
+    environment:
+      - node.name=elasticsearch
+      - cluster.initial_master_nodes=elasticsearch
+      - ZIPKIN_ENABLED=${ZIPKIN_ENABLED}
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    expose:
+      - 9200
+    ports:
+      - "9200:9200"
+    networks:
+      - back_net
+
+  kibana:
+    image: kibana:7.3.1
+    environment:
+      - ZIPKIN_ENABLED=${ZIPKIN_ENABLED}
+    ports:
+      - "5601:5601"
+    networks:
+      - back_net
+
+volumes:
+  elasticsearch-data:
+
+networks:
+  back_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: ${SUBNET1}
+  front_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: ${SUBNET2}
+

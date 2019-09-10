@@ -8,6 +8,7 @@ MindPhaser34 microservices repository
 - [Занятие 19: Устройство Gitlab CI. Построение процесса непрерывной интеграции](https://github.com/otus-devops-2019-05/MindPhaser34_microservices#%D0%B7%D0%B0%D0%BD%D1%8F%D1%82%D0%B8%D0%B5-19-%D1%83%D1%81%D1%82%D1%80%D0%BE%D0%B9%D1%81%D1%82%D0%B2%D0%BE-gitlab-ci-%D0%BF%D0%BE%D1%81%D1%82%D1%80%D0%BE%D0%B5%D0%BD%D0%B8%D0%B5-%D0%BF%D1%80%D0%BE%D1%86%D0%B5%D1%81%D1%81%D0%B0-%D0%BD%D0%B5%D0%BF%D1%80%D0%B5%D1%80%D1%8B%D0%B2%D0%BD%D0%BE%D0%B9-%D0%B8%D0%BD%D1%82%D0%B5%D0%B3%D1%80%D0%B0%D1%86%D0%B8%D0%B8)
 - [Занятие 20: Введение в мониторинг. Модели и принципы работы систем мониторинга](https://github.com/otus-devops-2019-05/MindPhaser34_microservices#%D0%B7%D0%B0%D0%BD%D1%8F%D1%82%D0%B8%D0%B5-20-%D0%B2%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B2-%D0%BC%D0%BE%D0%BD%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%BD%D0%B3-%D0%BC%D0%BE%D0%B4%D0%B5%D0%BB%D0%B8-%D0%B8-%D0%BF%D1%80%D0%B8%D0%BD%D1%86%D0%B8%D0%BF%D1%8B-%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%8B-%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC-%D0%BC%D0%BE%D0%BD%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%BD%D0%B3%D0%B0)
 - [Занятие 21: Мониторинг приложения и инфраструктуры](https://github.com/otus-devops-2019-05/MindPhaser34_microservices#%D0%B7%D0%B0%D0%BD%D1%8F%D1%82%D0%B8%D0%B5-21-%D0%BC%D0%BE%D0%BD%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%BD%D0%B3-%D0%BF%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D1%8F-%D0%B8-%D0%B8%D0%BD%D1%84%D1%80%D0%B0%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%82%D1%83%D1%80%D1%8B-)
+- [Занятие 23: Применение системы логирования в инфраструктуре на основе Docker](https://github.com/otus-devops-2019-05/MindPhaser34_microservices/tree/logging-1#%D0%B7%D0%B0%D0%BD%D1%8F%D1%82%D0%B8%D0%B5-23-%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D0%BD%D0%B5%D0%BD%D0%B8%D0%B5-%D1%81%D0%B8%D1%81%D1%82%D0%B5%D0%BC%D1%8B-%D0%BB%D0%BE%D0%B3%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F-%D0%B2-%D0%B8%D0%BD%D1%84%D1%80%D0%B0%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%82%D1%83%D1%80%D0%B5-%D0%BD%D0%B0-%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%B5-docker-)
 
 ### Занятие 15: Docker контейнеры. Docker под капотом. <a href="#top">^^^</a>
 
@@ -138,4 +139,50 @@ docker-compose -f docker-compose-monitoring.yml up -d
 Ссылка на докер-репозиторий с образами:
 
 https://hub.docker.com/u/mindphaser/
+
+### Занятие 23: Применение системы логирования в инфраструктуре на основе Docker <a href="#top">^^^</a>
+
+Перед разворачиваем сервисов логирования, необходимо увеличить парметр vm.max_map_count, прописав его в файле  /etc/sysctl.conf или разово выполнив данную команду
+```shell
+sysctl -w vm.max_map_count=262144
+```
+Итак, далее описание что было сделано по заданию:
+
+Создан файл docker/docker-compose-logging.yml, с помощью которого разворачиваются сервисы ElasticSerach, Fluentd, Kibana & Zipkin. Образ fleuntd билдится с помощью Dockerfile расположенном в logging/fluentd с помощью команды, выполняемой в той же папке.
+```shell
+docker build -t $USER_NAME/fluentd .
+```
+Там же находится конфигурационный файл fluentd.conf, в котором определены фильтры для парсинга json логов. Для неструктурированных логов сервисов определены grok-шаблоны.
+
+Чтобы запустить сервис fluentd, достаточно выполнить команду:
+```shell
+docker-compose -f docker-compose-logging.yml up -d fluentd
+```
+В файле docker-compose.yml определён драйвер fluentd для логирования сервисов.
+
+Для выполнения первого задания со * вводим следующий добавим следущий glok-шбалон в файл fleunt.conf (список шаблонов: https://github.com/elastic/logstash/blob/v1.4.2/patterns/grok-patterns)
+```shell
+<filter service.ui>
+  @type parser
+  format grok
+  grok_pattern service=%{WORD:service} \| event=%{WORD:event} \| path=%{PATH:path} \| request_id=%{GREEDYDATA:request_id} \| remote_addr=%{IPV4:remote_addr} \| method=%{GREEDYDATA:method} \| response_status=%{NUMBER:response_status}
+  key_name message
+  reserve_data true
+</filter>
+```
+Для задействования сервиса Zipkin в docker-compose.yml, docker-compose-logging.yml для каждого сервиса был добавлен параметр
+```shell
+environment:
+- ZIPKIN_ENABLED=${ZIPKIN_ENABLED}
+```
+при этом в файлу переменных .env добавлено объявление переменной
+```shell
+ZIPKIN_ENABLED=true
+```
+
+Чтобы пересоздать все сервисы, достаточно выполнить следующий команды из папки docker/
+```shell
+docker-compose -f docker-compose-logging.yml -f docker-compose.yml down
+docker-compose -f docker-compose-logging.yml -f docker-compose.yml up -d
+```
 
