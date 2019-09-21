@@ -5,7 +5,7 @@ metadata:
   name: comment-db
   labels:
     app: reddit
-    component: mongo 
+    component: mongo
     comment-db: "true"
 spec:
   ports:
