@@ -252,3 +252,7 @@ kubernetes/reddit/ui-ingress.yml		- Ingress - балансировщик наг�
 ```shell
 helm install --name gitlab . -f values.yaml
 ```
+- добавил триггер для запуска деплоя, при успешном выполнении пайплайна компонентов (https://docs.gitlab.com/ce/ci/triggers/)
+```sell
+curl --request POST --form token=$DEPLOY --form ref=master http://gitlab-gitlab/api/v4/projects/2/trigger/pipeline
+```
