@@ -12,6 +12,7 @@ MindPhaser34 microservices repository
 - [Задание 25: Введение в Kubernetes](https://github.com/otus-devops-2019-05/MindPhaser34_microservices#%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5-25-%D0%B2%D0%B2%D0%B5%D0%B4%D0%B5%D0%BD%D0%B8%D0%B5-%D0%B2-kubernetes-)
 - [Задание 26: Основные модели безопасности и контроллеры в Kubernetes](https://github.com/otus-devops-2019-05/MindPhaser34_microservices#%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5-26-%D0%BE%D1%81%D0%BD%D0%BE%D0%B2%D0%BD%D1%8B%D0%B5-%D0%BC%D0%BE%D0%B4%D0%B5%D0%BB%D0%B8-%D0%B1%D0%B5%D0%B7%D0%BE%D0%BF%D0%B0%D1%81%D0%BD%D0%BE%D1%81%D1%82%D0%B8-%D0%B8-%D0%BA%D0%BE%D0%BD%D1%82%D1%80%D0%BE%D0%BB%D0%BB%D0%B5%D1%80%D1%8B-%D0%B2-kubernetes-)
 - [Задание 27: Ingress-контроллеры и сервисы в Kubernetes](https://github.com/otus-devops-2019-05/MindPhaser34_microservices/tree/kubernetes-3#%D0%B7%D0%B0%D0%B4%D0%B0%D0%BD%D0%B8%D0%B5-27-ingress-%D0%BA%D0%BE%D0%BD%D1%82%D1%80%D0%BE%D0%BB%D0%BB%D0%B5%D1%80%D1%8B-%D0%B8-%D1%81%D0%B5%D1%80%D0%B2%D0%B8%D1%81%D1%8B-%D0%B2-kubernetes-)
+- [Задание 28: Интеграция Kubernetes в GitlabCI и такой разный Helm ]()
 
 ### Занятие 15: Docker контейнеры. Docker под капотом. <a href="#top">^^^</a>
 
@@ -223,12 +224,22 @@ kubectl proxy &
 
  
 kubernetes/reddit/mongo-claim-dynamic.yml 	- динамический запрос места в StorageClass Fast
+
 kubernetes/reddit/mongo-claim.yml		- запрос на выделение места в хранилище mongo-persistent-storage
+
 kubernetes/reddit/mongo-network-policy.yml	- NetworkPolicy для декларативного описания потоков трафика
+
 kubernetes/reddit/mongo-volume.yml		- PersistentVolume из которого будет выделятья место под сервисы
+
 kubernetes/reddit/storage-fast.yml		- StorageClass Fast с типом диска pd-ssd
+
 kubernetes/reddit/tls.crt			- сертификат для сервиса
+
 kubernetes/reddit/tls.key			- сертификат для сервиса
+
 kubernetes/reddit/ui-ingress-secret.yml		- манифест для создания объекта Secret
+
 kubernetes/reddit/ui-ingress.yml		- Ingress - балансировщик нагрузки
 
+
+### Задание 28: Интеграция Kubernetes в GitlabCI и такой разный Helm  <a href="#top">^^^</a>
